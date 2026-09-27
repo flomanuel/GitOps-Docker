@@ -18,18 +18,16 @@ services:
       - /opt/postgres/pgdata:/var/lib/postgresql
       # Dump target (backup job reads dump-file from host folder "backup")
       - /opt/postgres/backup:/dump
+      # TLS
+      - /etc/ssl/postgresql:/etc/ssl/postgresql
+    command:
+      - postgres
+      - -c
+      - config_file=/opt/postgres/postgres.conf
     labels:
       # Run sql dump before backup jobs collects it.
       # Write tmp -> failed dump never overrides a good one
       - docker-volume-backup.archive-pre=/bin/sh -c 'pg_dumpall -U postgres > /dump/pg_dumpall.sql.tmp && mv /dump/pg_dumpall.sql.tmp /dump/pg_dumpall.sql'
-      # Traefik
-      - traefik.enable=true
-      - traefik.docker.network=frontend
-      - traefik.tcp.routers.postgres.rule=HostSNI(`postgres.debian-01.data.home.sauers.link`)
-      - traefik.tcp.routers.postgres.entrypoints=postgres
-      - traefik.tcp.services.postgres.loadbalancer.server.port=5432
-      - traefik.tcp.routers.postgres.tls=true
-      - traefik.tcp.routers.postgres.tls.certresolver=cloudflare
     networks:
       - postgres
       - frontend
@@ -38,6 +36,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    ports:
+      - "5432:5432"
 
   # pgAdmin runs as uid 5050; a fresh bind mount would be root-owned.
   pgadmin-init:
