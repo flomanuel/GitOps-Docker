@@ -12,7 +12,8 @@ services:
     image: offen/docker-volume-backup:v2
     restart: unless-stopped
     environment:
-      BACKUP_CRON_EXPRESSION: "0 3 * * *"
+#      BACKUP_CRON_EXPRESSION: "0 3 * * *"
+      BACKUP_CRON_EXPRESSION: "6 12 * * *"
       BACKUP_RETENTION_DAYS: "7"
       # Rotation only touches files matching the static part of BACKUP_FILENAME.
       BACKUP_PRUNING_PREFIX: backup-
