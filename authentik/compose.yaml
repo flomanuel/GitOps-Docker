@@ -1,61 +1,61 @@
 # See https://docs.goauthentik.io/install-config/install/docker-compose/
-server:
-  command: server
-  depends_on:
-    postgresql:
-      condition: service_healthy
-  env_file:
-  - .env
-  environment:
-    AUTHENTIK_POSTGRESQL__HOST: ${PG_HOST}
-    AUTHENTIK_POSTGRESQL__PORT: ${PG_PORT}
-    AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
-    AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
-    AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
-    AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
-  image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2026.8.3}
-  ports:
-  - ${COMPOSE_PORT_HTTPS:-9443}:9443
-  restart: unless-stopped
-  shm_size: 512mb
-  volumes:
-  - ./data:/data
-  - ./custom-templates:/templates
-  labels:
-    - traefik.enable=true
-    - traefik.docker.network=frontend
-    - traefik.http.routers.authentik.rule=Host(`authentik.debian-01.prod.home.sauers.link`)
-    - traefik.http.routers.authentik.tls=true
-    - traefik.http.routers.authentik.tls.certresolver=cloudflare
-    - traefik.http.routers.authentik.entrypoints=mgmt
-  networks:
-    - frontend
-    - authentik
-worker:
-  command: worker
-  depends_on:
-    postgresql:
-      condition: service_healthy
-  env_file:
-  - .env
-  environment:
-    AUTHENTIK_POSTGRESQL__HOST: postgresql
-    AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
-    AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
-    AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
-    AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
-  image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2026.8.3}
-  restart: unless-stopped
-  shm_size: 512mb
-  user: root
-  volumes:
-  - /var/run/docker.sock:/var/run/docker.sock
-  - ./data:/data
-  - ./certs:/certs
-  - ./custom-templates:/templates
-  networks:
-    - authentik
-
+services:
+  server:
+    command: server
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    env_file:
+    - .env
+    environment:
+      AUTHENTIK_POSTGRESQL__HOST: ${PG_HOST}
+      AUTHENTIK_POSTGRESQL__PORT: ${PG_PORT}
+      AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
+      AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
+    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2026.8.3}
+    ports:
+    - ${COMPOSE_PORT_HTTPS:-9443}:9443
+    restart: unless-stopped
+    shm_size: 512mb
+    volumes:
+    - ./data:/data
+    - ./custom-templates:/templates
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=frontend
+      - traefik.http.routers.authentik.rule=Host(`authentik.debian-01.prod.home.sauers.link`)
+      - traefik.http.routers.authentik.tls=true
+      - traefik.http.routers.authentik.tls.certresolver=cloudflare
+      - traefik.http.routers.authentik.entrypoints=mgmt
+    networks:
+      - frontend
+      - authentik
+  worker:
+    command: worker
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    env_file:
+    - .env
+    environment:
+      AUTHENTIK_POSTGRESQL__HOST: postgresql
+      AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
+      AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
+      AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
+      AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
+    image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2026.8.3}
+    restart: unless-stopped
+    shm_size: 512mb
+    user: root
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ./data:/data
+    - ./certs:/certs
+    - ./custom-templates:/templates
+    networks:
+      - authentik
 networks:
   authentik:
     name: authentik
