@@ -22,14 +22,14 @@ services:
       # Run sql dump before backup jobs collects it.
       # Write tmp -> failed dump never overrides a good one
       - docker-volume-backup.archive-pre=/bin/sh -c 'pg_dumpall -U postgres > /dump/pg_dumpall.sql.tmp && mv /dump/pg_dumpall.sql.tmp /dump/pg_dumpall.sql'
+      # Traefik
       - traefik.enable=true
       - traefik.docker.network=frontend
-      # Traefik answers the Postgres STARTTLS request and terminates TLS; clients need sslmode=require (or stricter).
       - traefik.tcp.routers.postgres.rule=HostSNI(`postgres.debian-01.data.home.sauers.link`)
       - traefik.tcp.routers.postgres.entrypoints=postgres
-      - traefik.tcp.routers.postgres.tls=true
-      - traefik.tcp.routers.postgres.tls.certresolver=cloudflare
       - traefik.tcp.services.postgres.loadbalancer.server.port=5432
+      # - traefik.tcp.routers.postgres.tls=true
+      # - traefik.tcp.routers.postgres.tls.certresolver=cloudflare
     networks:
       - postgres
       - frontend
