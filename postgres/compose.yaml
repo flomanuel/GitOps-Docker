@@ -19,7 +19,7 @@ services:
       # Dump target (backup job reads dump-file from host folder "backup")
       - /opt/postgres/backup:/dump
       # TLS
-      - /etc/ssl/postgresql:/etc/ssl/postgresql
+      - /opt/mount/postgres/:/etc/ssl/postgres/
       - ./postgres.conf:/opt/postgres/postgres.conf:ro
     command:
       - postgres
