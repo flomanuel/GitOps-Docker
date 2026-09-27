@@ -29,3 +29,7 @@ services:
       # Runs the archive-pre/-post label commands and stops labeled containers.
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /opt/traefik/data:/backup/traefik/data:ro # certs
+      # Authentik
+      - /opt/authentik/data:/backup/authentik/data
+      - /opt/authentik/certs:/backup/authentik/certs
+      - /opt/authentik/custom-templates:/backup/authentik/custom-templates
