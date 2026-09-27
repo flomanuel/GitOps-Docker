@@ -11,7 +11,6 @@ entryPoints:
           scheme: https
   websecure:
     address: :443
-  # Published on the MGMT address only (MGMT_IP:443 -> 8443), see compose.yml.
   mgmt:
     address: :8443
 providers:
