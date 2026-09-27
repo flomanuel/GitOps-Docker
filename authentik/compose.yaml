@@ -38,6 +38,8 @@ services:
     networks:
       - frontend
       - authentik
+    ports: # todo: solve via traefik
+      - "389:389"
   worker:
     command: worker
     environment:
@@ -69,6 +71,8 @@ services:
     - ./custom-templates:/templates
     networks:
       - authentik
+    ports: # todo: solve via traefik
+      - "389:389"
 networks:
   authentik:
     name: authentik

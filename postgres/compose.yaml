@@ -37,7 +37,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    ports:
+    ports: # todo: solve via traefik
       - "5432:5432"
 
   # pgAdmin runs as uid 5050; a fresh bind mount would be root-owned.
