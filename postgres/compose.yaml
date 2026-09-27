@@ -21,7 +21,7 @@ services:
       # TLS
       - /opt/mount/postgres/:/etc/ssl/postgres/
       - ./postgres.conf:/opt/postgres/postgres.conf:ro
-      - ./pg_hba.conf:/opt/postgres/pg_hba.conf:ro
+#      - ./pg_hba.conf:/opt/postgres/pg_hba.conf:ro
     command:
       - postgres
       - -c
