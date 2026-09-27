@@ -1,0 +1,70 @@
+services:
+  broker:
+    image: docker.io/valkey/valkey:9-alpine
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+    networks:
+      - authentik
+      - paperless-ngx
+    environments:
+      - COMPOSE_PROJECT_NAME: paperless
+      - PAPERLESS_TIME_ZONE: Europe/Berlin
+      - PAPERLESS_OCR_LANGUAGE: de
+      - PAPERLESS_OCR_LANGUAGES: eng
+      - USERMAP_UID: 3001
+      - USERMAP_GID: 3007
+      # DB access
+      # - PAPERLESS_DBENGINE: postgresql
+      # - PAPERLESS_DBHOST: ${DB_HOST}
+      # - PAPERLESS_DBPORT: ${DB_PORT}
+      # - PAPERLESS_DBNAME: ${DB_NAME}
+      # - PAPERLESS_DBUSER: ${DB_USER}
+      # - PAPERLESS_DBPASS: ${DB_PASS}
+      # - PAPERLESS_DB_OPTIONS: "sslmode=require"
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    restart: unless-stopped
+    depends_on:
+      - db
+      - broker
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=frontend
+      - traefik.http.routers.paperless-ngx.rule=Host(`paperless-ngx.debian-02.prod.home.sauers.link`) || Host(`docs.home.sauers.link`)
+      - traefik.http.routers.paperless-ngx.tls=true
+      - traefik.http.routers.paperless-ngx.tls.certresolver=cloudflare
+      - traefik.http.routers.paperless-ngx.entrypoints=websecure
+      - traefik.http.routers.paperless-ngx.service=paperless-ngx
+      - traefik.http.services.paperless-ngx.loadbalancer.server.port=8000
+    volumes:
+      # store data and media (e.g. thumbnails) in the same folder
+      - /mnt/paperless-ngx/data:/usr/src/paperless/data
+      - /mnt/paperless-ngx/data:/usr/src/paperless/media
+      - /mnt/paperless-ngx/consume:/usr/src/paperless/consume
+    environment:
+      - COMPOSE_PROJECT_NAME: paperless
+      - PAPERLESS_TIME_ZONE: Europe/Berlin
+      - PAPERLESS_OCR_LANGUAGE: de
+      - PAPERLESS_OCR_LANGUAGES: eng
+      # Redis
+      - PAPERLESS_REDIS: redis://broker:6379
+      - USERMAP_UID: 3001
+      - USERMAP_GID: 3007
+      # DB access
+      - PAPERLESS_DBENGINE: postgresql
+      - PAPERLESS_DBHOST: ${DB_HOST}
+      - PAPERLESS_DBPORT: ${DB_PORT}
+      - PAPERLESS_DBNAME: ${DB_NAME}
+      - PAPERLESS_DBUSER: ${DB_USER}
+      - PAPERLESS_DBPASS: ${DB_PASS}
+      - PAPERLESS_DB_OPTIONS: "sslmode=require"
+    networks:
+      - authentik
+      - paperless-ngx
+volumes:
+  redisdata:
+networks:
+  frontend:
+    external: true
+  paperless-ngx:
