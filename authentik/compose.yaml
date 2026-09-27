@@ -40,6 +40,7 @@ services:
   worker:
     command: worker
     environment:
+      # db setup
       AUTHENTIK_POSTGRESQL__HOST: ${PG_HOST}
       AUTHENTIK_POSTGRESQL__PORT: ${PG_PORT}
       AUTHENTIK_POSTGRESQL__NAME: ${PG_DB:-authentik}
@@ -48,6 +49,13 @@ services:
       AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
       AUTHENTIK_POSTGRESQL__SSLMODE: ${PG_SSL_MODE}
       AUTHENTIK_LOG_LEVEL: ${AUTHENTIK_LOG_LEVEL:-debug}
+      # mail setup
+      AUTHENTIK_EMAIL__FROM: ${AUTHENTIK_EMAIL__FROM}
+      AUTHENTIK_EMAIL__PORT: ${AUTHENTIK_EMAIL__PORT}
+      AUTHENTIK_EMAIL__USERNAME: ${AUTHENTIK_EMAIL__USERNAME}
+      AUTHENTIK_EMAIL__PASSWORD: ${AUTHENTIK_EMAIL__PASSWORD}
+      AUTHENTIK_EMAIL__USE_TLS: ${AUTHENTIK_EMAIL__USE_TLS}
+      AUTHENTIK_EMAIL__USE_SSL: ${AUTHENTIK_EMAIL__USE_SSL}
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2026.8.3}
     restart: unless-stopped
     shm_size: 512mb
