@@ -1,0 +1,49 @@
+services:
+  backend:
+    container_name: infisical-backend
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_started
+    image: infisical/infisical:${INFISCAL_VERSION} # PIN THIS TO A SPECIFIC TAG
+    pull_policy: always
+    env_file: .env
+    ports:
+      - 80:8080
+    environment:
+      - NODE_ENV=production
+    networks:
+      - infisical
+      - frontend
+    labels:
+      # Backup
+      - docker-volume-backup.stop-during-backup=true
+      # Traefik
+      - traefik.enable=true
+      - traefik.docker.network=frontend
+      - traefik.http.routers.infiscal.rule=Host(`infiscal.debian-01.prod.home.sauers.link`) || Host(`infiscal.debian-01.mgmt.home.sauers.link`)
+      - traefik.http.routers.infiscal.tls=true
+      - traefik.http.routers.infiscal.tls.certresolver=cloudflare
+      - traefik.http.routers.infiscal.entrypoints=websecure
+      - traefik.http.routers.infiscal.service=infiscal
+      - traefik.http.services.infiscal.loadbalancer.server.port=8080
+  redis:
+    image: redis
+    container_name: infisical-dev-redis
+    env_file: .env
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - infisical
+    volumes:
+      - redis_data:/data # no need to back up, stores only remporary data
+
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  infisical:
+  frontend:
+    external: true

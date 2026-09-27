@@ -28,6 +28,9 @@ services:
     environment:
       CF_DNS_API_TOKEN: ${CF_DNS_API_TOKEN:?}
     restart: unless-stopped
+    labels:
+      # Backup
+      - docker-volume-backup.stop-during-backup=true
 
 networks:
   frontend:

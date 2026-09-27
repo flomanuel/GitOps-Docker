@@ -35,6 +35,8 @@ services:
       - traefik.http.routers.authentik.entrypoints=websecure
       - traefik.http.routers.authentik.service=authentik
       - traefik.http.services.authentik.loadbalancer.server.port=9000
+      # Backup
+      - docker-volume-backup.stop-during-backup=true
     networks:
       - frontend
       - authentik
@@ -69,6 +71,9 @@ services:
     - ./custom-templates:/templates
     networks:
       - authentik
+    labels:
+      # Backup
+      - docker-volume-backup.stop-during-backup=true
   # LDAP outpost, see https://docs.goauthentik.io/add-secure-apps/outposts/manual-deploy-docker-compose/
   ldap:
     environment:
