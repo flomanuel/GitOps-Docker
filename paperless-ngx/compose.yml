@@ -5,7 +5,7 @@ services:
     volumes:
       - redisdata:/data
     networks:
-      - authentik
+      - frontend
       - paperless-ngx
     environment:
       COMPOSE_PROJECT_NAME: paperless
@@ -60,7 +60,7 @@ services:
       PAPERLESS_DBPASS: ${DB_PASS}
       PAPERLESS_DB_OPTIONS: "sslmode=require"
     networks:
-      - authentik
+      - frontend
       - paperless-ngx
 volumes:
   redisdata:
