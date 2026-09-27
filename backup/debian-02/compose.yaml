@@ -1,0 +1,31 @@
+# Backups via offen/docker-volume-backup. https://offen.github.io/docker-volume-backup/
+# - Archives all host dirs mounted under /backup, GPG-encrypted, to the SeaweedFS S3.
+# - New stack with data on this host? Add its dir below as /backup/<stack>/<dir>.
+#
+# Stack variables (in Dockhand):
+#   BACKUP_S3_ACCESS_KEY (secret), BACKUP_S3_SECRET_KEY (secret), BACKUP_S3_ENDPOINT, BACKUP_S3_BUCKET
+#   BACKUP_GPG_PASSPHRASE (secret)     symmetric passphrase for the archives
+#   BACKUP_NOTIFICATION_URLS (secret)  optional comma-separated shoutrrr URLs, notified on
+#                                      failed backups; unset disables notifications
+services:
+  backup:
+    image: offen/docker-volume-backup:v2
+    restart: unless-stopped
+    environment:
+      BACKUP_CRON_EXPRESSION: "0 3 * * *"
+      BACKUP_RETENTION_DAYS: "7"
+      # Rotation only touches files matching the static part of BACKUP_FILENAME.
+      BACKUP_PRUNING_PREFIX: backup-
+      AWS_ENDPOINT: ${BACKUP_S3_ENDPOINT:?}
+      AWS_S3_BUCKET_NAME: ${BACKUP_S3_BUCKET:?}
+      AWS_S3_PATH: debian-02
+      AWS_ACCESS_KEY_ID: ${BACKUP_S3_ACCESS_KEY:?}
+      AWS_SECRET_ACCESS_KEY: ${BACKUP_S3_SECRET_KEY:?}
+      GPG_PASSPHRASE: ${BACKUP_GPG_PASSPHRASE:?}
+      NOTIFICATION_URLS: ${BACKUP_NOTIFICATION_URLS:-}
+      NOTIFICATION_LEVEL: error
+      TZ: Europe/Berlin
+    volumes:
+      # Runs the archive-pre/-post label commands and stops labeled containers.
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /opt/traefik/data:/backup/traefik/data:ro # certs
