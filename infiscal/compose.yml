@@ -8,8 +8,6 @@ services:
     image: infisical/infisical:${INFISCAL_VERSION} # PIN THIS TO A SPECIFIC TAG
     pull_policy: always
     env_file: .env
-    ports:
-      - 80:8080
     environment:
       - NODE_ENV=production
     networks:
