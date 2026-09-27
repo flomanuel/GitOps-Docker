@@ -2,7 +2,6 @@
 # - Entrypoints are bound per VLAN, so a router picks its network via `entrypoints=`:
 #     web/websecure  -> PROD and DATA addresses (:80/:443)
 #     mgmt           -> MGMT address (:443 on the host, :8443 in the container)
-#     postgres       -> DATA address (:5432), TCP/TLS with HostSNI
 # - The shared "frontend" network is created by Ansible (docker_networks), not by this stack.
 #
 # Stack variables (per environment, in Dockhand):
