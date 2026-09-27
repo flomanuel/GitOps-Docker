@@ -38,8 +38,6 @@ services:
     networks:
       - frontend
       - authentik
-#    ports: # todo: solve via traefik
-#      - "389:389"
   worker:
     command: worker
     environment:
@@ -71,8 +69,21 @@ services:
     - ./custom-templates:/templates
     networks:
       - authentik
-#    ports: # todo: solve via traefik
-#      - "389:389"
+  # LDAP outpost, see https://docs.goauthentik.io/add-secure-apps/outposts/manual-deploy-docker-compose/
+  ldap:
+    environment:
+      AUTHENTIK_HOST: http://server:9000
+      AUTHENTIK_INSECURE: "false"
+      AUTHENTIK_TOKEN: ${AUTHENTIK_LDAP_OUTPOST_TOKEN:?ldap outpost token required}
+    image: ghcr.io/goauthentik/ldap:${AUTHENTIK_TAG:-2026.8.3}
+    restart: unless-stopped
+    depends_on:
+      - server
+    networks:
+      - authentik
+    ports: # todo: solve via traefik
+      - "389:3389"
+      - "636:6636"
 networks:
   authentik:
     name: authentik
