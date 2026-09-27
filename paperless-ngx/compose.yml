@@ -7,7 +7,7 @@ services:
     networks:
       - authentik
       - paperless-ngx
-    environments:
+    environment:
       COMPOSE_PROJECT_NAME: paperless
       PAPERLESS_TIME_ZONE: Europe/Berlin
       PAPERLESS_OCR_LANGUAGE: de
