@@ -20,10 +20,11 @@ services:
       - /opt/postgres/backup:/dump
       # TLS
       - /etc/ssl/postgresql:/etc/ssl/postgresql
+      - ./postgres.conf:/opt/postgres/postgres.conf:ro
     command:
       - postgres
       - -c
-      - config_file=./postgres.conf
+      - config_file=/opt/postgres/postgres.conf
     labels:
       # Run sql dump before backup jobs collects it.
       # Write tmp -> failed dump never overrides a good one
