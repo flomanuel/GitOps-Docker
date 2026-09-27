@@ -29,7 +29,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=frontend
-      - traefik.http.routers.authentik.rule=Host(`authentik.debian-02.prod.home.sauers.link`) || Host(`auth.home.sauers.link`)
+      - traefik.http.routers.authentik.rule=Host(`authentik.debian-02.prod.home.sauers.link`) || (`authentik.debian-02.mgmt.home.sauers.link`) || Host(`auth.home.sauers.link`)
       - traefik.http.routers.authentik.tls=true
       - traefik.http.routers.authentik.tls.certresolver=cloudflare
       - traefik.http.routers.authentik.entrypoints=websecure
