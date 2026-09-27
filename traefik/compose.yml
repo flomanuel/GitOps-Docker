@@ -19,7 +19,6 @@ services:
       - "${DATA_IP:?}:80:80"
       - "${DATA_IP:?}:443:443"
       - "${MGMT_IP:?}:80:80"
-      - "${MGMT_IP:?}:443:8443"
       - "${MGMT_IP:?}:443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

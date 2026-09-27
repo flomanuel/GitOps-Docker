@@ -11,8 +11,6 @@ entryPoints:
           scheme: https
   websecure:
     address: :443
-  mgmt:
-    address: :8443
 providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
