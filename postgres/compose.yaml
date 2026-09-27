@@ -28,8 +28,8 @@ services:
       - traefik.tcp.routers.postgres.rule=HostSNI(`postgres.debian-01.data.home.sauers.link`)
       - traefik.tcp.routers.postgres.entrypoints=postgres
       - traefik.tcp.services.postgres.loadbalancer.server.port=5432
-      # - traefik.tcp.routers.postgres.tls=true
-      # - traefik.tcp.routers.postgres.tls.certresolver=cloudflare
+      - traefik.tcp.routers.postgres.tls=true
+      - traefik.tcp.routers.postgres.tls.certresolver=cloudflare
     networks:
       - postgres
       - frontend
