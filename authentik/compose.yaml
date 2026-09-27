@@ -11,7 +11,7 @@ services:
       AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
       AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
       AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
-      AUTHENTIK_POSTGRESQL__SSLMODE: ${PG_SSL_MOE}
+      AUTHENTIK_POSTGRESQL__SSLMODE: ${PG_SSL_MODE}
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2026.8.3}
     restart: unless-stopped
     shm_size: 512mb
@@ -41,7 +41,7 @@ services:
       AUTHENTIK_POSTGRESQL__PASSWORD: ${PG_PASS}
       AUTHENTIK_POSTGRESQL__USER: ${PG_USER:-authentik}
       AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
-      AUTHENTIK_POSTGRESQL__SSLMODE: ${PG_SSL_MOE}
+      AUTHENTIK_POSTGRESQL__SSLMODE: ${PG_SSL_MODE}
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2026.8.3}
     restart: unless-stopped
     shm_size: 512mb
