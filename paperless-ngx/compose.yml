@@ -14,14 +14,14 @@ services:
       - PAPERLESS_OCR_LANGUAGES: eng
       - USERMAP_UID: 3001
       - USERMAP_GID: 3007
-      # DB access
-      # - PAPERLESS_DBENGINE: postgresql
-      # - PAPERLESS_DBHOST: ${DB_HOST}
-      # - PAPERLESS_DBPORT: ${DB_PORT}
-      # - PAPERLESS_DBNAME: ${DB_NAME}
-      # - PAPERLESS_DBUSER: ${DB_USER}
-      # - PAPERLESS_DBPASS: ${DB_PASS}
-      # - PAPERLESS_DB_OPTIONS: "sslmode=require"
+  # DB access
+  # - PAPERLESS_DBENGINE: postgresql
+  # - PAPERLESS_DBHOST: ${DB_HOST}
+  # - PAPERLESS_DBPORT: ${DB_PORT}
+  # - PAPERLESS_DBNAME: ${DB_NAME}
+  # - PAPERLESS_DBUSER: ${DB_USER}
+  # - PAPERLESS_DBPASS: ${DB_PASS}
+  # - PAPERLESS_DB_OPTIONS: "sslmode=require"
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     restart: unless-stopped
