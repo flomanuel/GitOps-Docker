@@ -2,8 +2,8 @@
 services:
   server:
     command: server
-    env_file:
-    - .env
+#    env_file:
+#    - .env
     environment:
       AUTHENTIK_POSTGRESQL__HOST: ${PG_HOST}
       AUTHENTIK_POSTGRESQL__PORT: ${PG_PORT}
@@ -32,8 +32,8 @@ services:
       - authentik
   worker:
     command: worker
-    env_file:
-    - .env
+    #    env_file:
+    #    - .env
     environment:
       AUTHENTIK_POSTGRESQL__HOST: ${PG_HOST}
       AUTHENTIK_POSTGRESQL__PORT: ${PG_PORT}
