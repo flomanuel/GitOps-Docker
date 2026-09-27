@@ -8,20 +8,20 @@ services:
       - authentik
       - paperless-ngx
     environments:
-      - COMPOSE_PROJECT_NAME: paperless
-      - PAPERLESS_TIME_ZONE: Europe/Berlin
-      - PAPERLESS_OCR_LANGUAGE: de
-      - PAPERLESS_OCR_LANGUAGES: eng
-      - USERMAP_UID: 3001
-      - USERMAP_GID: 3007
+      COMPOSE_PROJECT_NAME: paperless
+      PAPERLESS_TIME_ZONE: Europe/Berlin
+      PAPERLESS_OCR_LANGUAGE: de
+      PAPERLESS_OCR_LANGUAGES: eng
+      USERMAP_UID: 3001
+      USERMAP_GID: 3007
   # DB access
-  # - PAPERLESS_DBENGINE: postgresql
-  # - PAPERLESS_DBHOST: ${DB_HOST}
-  # - PAPERLESS_DBPORT: ${DB_PORT}
-  # - PAPERLESS_DBNAME: ${DB_NAME}
-  # - PAPERLESS_DBUSER: ${DB_USER}
-  # - PAPERLESS_DBPASS: ${DB_PASS}
-  # - PAPERLESS_DB_OPTIONS: "sslmode=require"
+  # PAPERLESS_DBENGINE: postgresql
+  # PAPERLESS_DBHOST: ${DB_HOST}
+  # PAPERLESS_DBPORT: ${DB_PORT}
+  # PAPERLESS_DBNAME: ${DB_NAME}
+  # PAPERLESS_DBUSER: ${DB_USER}
+  # PAPERLESS_DBPASS: ${DB_PASS}
+  # PAPERLESS_DB_OPTIONS: "sslmode=require"
   webserver:
     image: ghcr.io/paperless-ngx/paperless-ngx:latest
     restart: unless-stopped
@@ -43,22 +43,22 @@ services:
       - /mnt/paperless-ngx/data:/usr/src/paperless/media
       - /mnt/paperless-ngx/consume:/usr/src/paperless/consume
     environment:
-      - COMPOSE_PROJECT_NAME: paperless
-      - PAPERLESS_TIME_ZONE: Europe/Berlin
-      - PAPERLESS_OCR_LANGUAGE: de
-      - PAPERLESS_OCR_LANGUAGES: eng
+      COMPOSE_PROJECT_NAME: paperless
+      PAPERLESS_TIME_ZONE: Europe/Berlin
+      PAPERLESS_OCR_LANGUAGE: de
+      PAPERLESS_OCR_LANGUAGES: eng
       # Redis
-      - PAPERLESS_REDIS: redis://broker:6379
-      - USERMAP_UID: 3001
-      - USERMAP_GID: 3007
+      PAPERLESS_REDIS: redis://broker:6379
+      USERMAP_UID: 3001
+      USERMAP_GID: 3007
       # DB access
-      - PAPERLESS_DBENGINE: postgresql
-      - PAPERLESS_DBHOST: ${DB_HOST}
-      - PAPERLESS_DBPORT: ${DB_PORT}
-      - PAPERLESS_DBNAME: ${DB_NAME}
-      - PAPERLESS_DBUSER: ${DB_USER}
-      - PAPERLESS_DBPASS: ${DB_PASS}
-      - PAPERLESS_DB_OPTIONS: "sslmode=require"
+      PAPERLESS_DBENGINE: postgresql
+      PAPERLESS_DBHOST: ${DB_HOST}
+      PAPERLESS_DBPORT: ${DB_PORT}
+      PAPERLESS_DBNAME: ${DB_NAME}
+      PAPERLESS_DBUSER: ${DB_USER}
+      PAPERLESS_DBPASS: ${DB_PASS}
+      PAPERLESS_DB_OPTIONS: "sslmode=require"
     networks:
       - authentik
       - paperless-ngx
