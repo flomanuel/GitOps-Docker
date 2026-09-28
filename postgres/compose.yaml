@@ -25,6 +25,13 @@ services:
       - postgres
       - -c
       - config_file=/opt/postgres/postgres.conf
+      - -c
+      # See https://www.postgresql.org/docs/14/runtime-config-resource.html#GUC-SHARED-BUFFERS
+      - shared_buffers=2GB # 25 % of system memory
+      - -c
+      - max_connections=200
+      - -c
+      - max_wal_size=???
     labels:
       # Refresh planner stats, then run sql dump before backup jobs collects it.
       # vacuumdb uses ";" -> a failed vacuum never blocks the dump.
