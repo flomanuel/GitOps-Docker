@@ -1,0 +1,40 @@
+# Nextcloud AIO (stack: nextcloud/, host: debian-02)
+# Defined via file provider because the apache container is created by the AIO mastercontainer and cannot carry labels.
+# See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md#traefik-3
+http:
+  routers:
+    nextcloud:
+      rule: "Host(`cloud.home.sauers.link`)"
+      entryPoints:
+        - websecure
+      service: nextcloud
+      middlewares:
+        - nextcloud-chain
+      tls:
+        certResolver: cloudflare
+
+  services:
+    nextcloud:
+      loadBalancer:
+        servers:
+          # Reachable via the "frontend" network (APACHE_ADDITIONAL_NETWORK). Port must match APACHE_PORT.
+          - url: "http://nextcloud-aio-apache:11000"
+
+  middlewares:
+    nextcloud-secure-headers:
+      headers:
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
+        referrerPolicy: "same-origin"
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"
+
+    https-redirect:
+      redirectScheme:
+        scheme: https
+
+    nextcloud-chain:
+      chain:
+        middlewares:
+          - https-redirect
+          - nextcloud-secure-headers

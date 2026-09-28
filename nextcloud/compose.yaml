@@ -1,0 +1,42 @@
+# See https://github.com/nextcloud/all-in-one#nextcloud-all-in-one
+name: nextcloud-aio
+services:
+  nextcloud-aio-mastercontainer:
+    image: ghcr.io/nextcloud-releases/all-in-one:latest
+    init: true
+    restart: always
+    container_name: nextcloud-aio-mastercontainer # DO NOT CHANGE
+    labels:
+      # Traefik routing lives in traefik/dynamic/nextcloud.yml (file provider), see
+      # https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md#traefik-3
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config # DO NOT CHANGE - otherwise, the builtin backup solution breaks
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks: ["nextcloud-aio", "frontend"]
+    ports:
+      - "8080:8080"
+    environment:
+      APACHE_PORT: 11000
+      APACHE_IP_BINDING: 127.0.0.1
+      APACHE_ADDITIONAL_NETWORK: frontend
+      FULLTEXTSEARCH_JAVA_OPTIONS: "-Xms1024M -Xmx1024M"
+      NEXTCLOUD_DATADIR: /mnt/nextcloud/nextcloud_data # Set the host directory for Nextcloud's datadir.
+      NEXTCLOUD_MOUNT: /mnt/nextcloud
+      NEXTCLOUD_UPLOAD_LIMIT: 10G
+      NEXTCLOUD_MEMORY_LIMIT: 1024M
+
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer # DO NOT CHANGE
+
+networks:
+  nextcloud-aio-apache:
+    external: true
+  nextcloud-aio:
+    name: nextcloud-aio
+    driver_opts:
+      com.docker.network.driver.mtu: 1440
+  frontend:
+    external: true
+
+# todo: sicherstellen, dass BorgBackup die DB und user-daten sichert

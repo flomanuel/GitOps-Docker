@@ -9,12 +9,30 @@ entryPoints:
         entryPoint:
           to: websecure
           scheme: https
+      # Required for Nextcloud
+      encodedCharacters:
+        allowEncodedSlash: true
+        allowEncodedQuestionMark: true
+        allowEncodedPercent: true
   websecure:
     address: :443
+    transport:
+      respondingTimeouts:
+        # needed for Nextcloud
+        readTimeout: 3610s
+    http:
+      # Required for Nextcloud
+      encodedCharacters:
+        allowEncodedSlash: true
+        allowEncodedQuestionMark: true
+        allowEncodedPercent: true
 providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
+  file:
+    directory: /etc/traefik/dynamic
+    watch: true
 certificatesResolvers:
   cloudflare:
     acme:
