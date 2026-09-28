@@ -15,7 +15,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
     volumes:
       # Absolute paths: data stays in the pre-Dockhand location.
-      - /mnt/postgres/pgdata:/var/lib/postgresql
+      - /src/postgres/data:/var/lib/postgresql
       # Dump target (backup job reads dump-file from host folder "backup")
       - /opt/postgres/backup:/dump
       # TLS
