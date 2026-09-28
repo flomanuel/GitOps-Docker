@@ -26,9 +26,11 @@ services:
       - -c
       - config_file=/opt/postgres/postgres.conf
     labels:
-      # Run sql dump before backup jobs collects it.
+      # Refresh planner stats, then run sql dump before backup jobs collects it.
+      # vacuumdb uses ";" -> a failed vacuum never blocks the dump.
       # Write tmp -> failed dump never overrides a good one
-      - docker-volume-backup.archive-pre=/bin/sh -c 'pg_dumpall -U postgres > /dump/pg_dumpall.sql.tmp && mv /dump/pg_dumpall.sql.tmp /dump/pg_dumpall.sql'
+      # vacuumdb: https://github.com/goauthentik/authentik/issues/24179
+      - docker-volume-backup.archive-pre=/bin/sh -c 'vacuumdb -U postgres --all --analyze; pg_dumpall -U postgres > /dump/pg_dumpall.sql.tmp && mv /dump/pg_dumpall.sql.tmp /dump/pg_dumpall.sql'
     networks:
       - postgres
       - frontend
