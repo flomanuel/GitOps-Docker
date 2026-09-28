@@ -13,20 +13,6 @@ http:
       tls:
         certResolver: cloudflare
 
-    # HaRP exposes the Docker API (via the mounted docker.sock) under /exapps/app_api/, protected only by the shared key.
-    # Nextcloud talks to HaRP directly on the nextcloud-aio network (nextcloud-aio-harp:8780), so block it from outside.
-    # ExApp UIs under /exapps/<appid>/ stay reachable.
-    nextcloud-harp-docker-api-deny:
-      rule: "Host(`cloud.home.sauers.link`) && PathPrefix(`/exapps/app_api`)"
-      priority: 1000
-      entryPoints:
-        - websecure
-      service: nextcloud
-      middlewares:
-        - deny-all
-      tls:
-        certResolver: cloudflare
-
   services:
     nextcloud:
       loadBalancer:
@@ -42,13 +28,6 @@ http:
         referrerPolicy: "same-origin"
         customRequestHeaders:
           X-Forwarded-Proto: "https"
-
-    # Traefik has no deny middleware; an allow list that no client can match returns 403.
-    # No ipStrategy on purpose, so the check uses the TCP peer address and X-Forwarded-For cannot bypass it.
-    deny-all:
-      ipAllowList:
-        sourceRange:
-          - "127.0.0.1/32"
 
     https-redirect:
       redirectScheme:
