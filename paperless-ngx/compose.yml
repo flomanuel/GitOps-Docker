@@ -28,6 +28,8 @@ services:
     restart: unless-stopped
     depends_on:
       - broker
+      - tika
+      - gotenberg
     labels:
       - traefik.enable=true
       - traefik.docker.network=frontend
@@ -71,9 +73,21 @@ services:
       PAPERLESS_SOCIAL_AUTO_SIGNUP: ${PAPERLESS_SOCIAL_AUTO_SIGNUP:-true}
       PAPERLESS_SOCIALACCOUNT_ALLOW_SIGNUPS: true
       PAPERLESS_CONSUMER_RECURSIVE: true
+      PAPERLESS_TIKA_ENABLED: true
+      PAPERLESS_TIKA_ENDPOINT: http://paperless-ngx:9998
+      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://paperless-ngx:3000
     networks:
       - frontend
       - paperless-ngx
+  tika:
+    image: apache/tika:${TIKA_VERSION}
+  gotenberg:
+    image: gotenberg/gotenberg:${GOTENBERG_VERSION}
+    environment:
+      CHROMIUM_DISABLE_JAVASCRIPT: true
+      CHROMIUM_ALLOW_LIST: "file:///tmp/.*"
+    networks:
+      paperless-ngx
 volumes:
   redisdata:
 networks:
