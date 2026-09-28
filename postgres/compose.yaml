@@ -30,8 +30,6 @@ services:
       - shared_buffers=2GB # 25 % of system memory
       - -c
       - max_connections=200
-      - -c
-      - max_wal_size=???
     labels:
       # Refresh planner stats, then run sql dump before backup jobs collects it.
       # vacuumdb uses ";" -> a failed vacuum never blocks the dump.
