@@ -6,9 +6,6 @@ services:
     init: true
     restart: always
     container_name: nextcloud-aio-mastercontainer # DO NOT CHANGE
-    labels:
-      # Traefik routing lives in traefik/dynamic/nextcloud.yml (file provider), see
-      # https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md#traefik-3
     volumes:
       - nextcloud_aio_mastercontainer:/mnt/docker-aio-config # DO NOT CHANGE - otherwise, the builtin backup solution breaks
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -38,5 +35,3 @@ networks:
       com.docker.network.driver.mtu: 1440
   frontend:
     external: true
-
-# todo: sicherstellen, dass BorgBackup die DB und user-daten sichert

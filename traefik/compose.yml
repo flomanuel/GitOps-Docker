@@ -6,6 +6,7 @@
 #
 # Stack variables (per environment, in Dockhand):
 #   PROD_IP, DATA_IP, MGMT_IP     host addresses to bind to
+#   TRAEFIK_HOST                  host name (e.g. debian-02), selects ./dynamic/<host>/ for the file provider
 #   CF_DNS_API_TOKEN (secret)     Cloudflare Zone:DNS:Edit, ACME DNS challenge
 services:
   traefik:
@@ -23,8 +24,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.yml:/etc/traefik/traefik.yml:ro
-      # Dynamic config (file provider) for services that cannot use docker labels, e.g. Nextcloud AIO.
-      - ./dynamic/:/etc/traefik/dynamic/:ro
+      # Host-specific dynamic config (file provider) for services that cannot use docker labels, e.g. Nextcloud AIO.
+      - ./dynamic/${TRAEFIK_HOST:?}/:/etc/traefik/dynamic/:ro
       # Absolute path: ACME certs stay in the pre-Dockhand location (backed up by the backup stack).
       - /opt/traefik/data/certs/:/var/traefik/certs/:rw
     environment:

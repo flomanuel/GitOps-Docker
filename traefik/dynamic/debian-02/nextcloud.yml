@@ -1,4 +1,4 @@
-# Nextcloud AIO (stack: nextcloud/, host: debian-02)
+# Nextcloud AIO (stack: nextcloud/), only loaded by Traefik on debian-02 (TRAEFIK_HOST)
 # Defined via file provider because the apache container is created by the AIO mastercontainer and cannot carry labels.
 # See https://github.com/nextcloud/all-in-one/blob/main/reverse-proxy.md#traefik-3
 http:
