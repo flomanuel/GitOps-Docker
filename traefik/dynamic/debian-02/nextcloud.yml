@@ -32,7 +32,7 @@ http:
       loadBalancer:
         servers:
           # Reachable via the "frontend" network (APACHE_ADDITIONAL_NETWORK). Port must match APACHE_PORT.
-          - url: "http://127.0.0.1:11000"
+          - url: "http://nextcloud-aio-apache:11000"
 
   middlewares:
     nextcloud-secure-headers:

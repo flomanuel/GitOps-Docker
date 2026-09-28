@@ -27,8 +27,6 @@ volumes:
     name: nextcloud_aio_mastercontainer # DO NOT CHANGE
 
 networks:
-  nextcloud-aio-apache:
-    external: true
   nextcloud-aio:
     name: nextcloud-aio
     driver_opts:
