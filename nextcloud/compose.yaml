@@ -17,8 +17,8 @@ services:
       APACHE_IP_BINDING: 127.0.0.1
       APACHE_ADDITIONAL_NETWORK: frontend
       FULLTEXTSEARCH_JAVA_OPTIONS: "-Xms1024M -Xmx1024M"
-      NEXTCLOUD_DATADIR: /mnt/nextcloud/nextcloud_data # Set the host directory for Nextcloud's datadir.
-      NEXTCLOUD_MOUNT: /mnt/nextcloud
+      NEXTCLOUD_DATADIR: /opt/nextcloud/nc_mount/ncdata # Set the host directory for Nextcloud's datadir.
+      NEXTCLOUD_MOUNT: /opt/nextcloud/nc_mount
       NEXTCLOUD_UPLOAD_LIMIT: 10G
       NEXTCLOUD_MEMORY_LIMIT: 1024M
 
