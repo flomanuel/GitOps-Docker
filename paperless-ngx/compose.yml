@@ -87,7 +87,7 @@ services:
     image: gotenberg/gotenberg:${GOTENBERG_VERSION}
     environment:
       CHROMIUM_DISABLE_JAVASCRIPT: true
-      CHROMIUM_ALLOW_LIST: "file:///tmp/.*"
+      CHROMIUM_ALLOW_LIST: "^file:///tmp/.*"
     networks:
       - paperless-ngx
 volumes:
