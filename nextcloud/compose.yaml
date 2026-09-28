@@ -22,6 +22,8 @@ services:
       NEXTCLOUD_UPLOAD_LIMIT: 10G
       NEXTCLOUD_MEMORY_LIMIT: 1024M
 
+      NEXTCLOUD_ADDITIONAL_PHP_EXTENSIONS: imagick php-smbclient
+
 volumes:
   nextcloud_aio_mastercontainer:
     name: nextcloud_aio_mastercontainer # DO NOT CHANGE
