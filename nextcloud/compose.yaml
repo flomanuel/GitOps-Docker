@@ -1,4 +1,4 @@
-# See https://github.com/nextcloud/all-in-one#nextcloud-all-in-one
+---
 name: nextcloud-aio
 services:
   nextcloud-aio-mastercontainer:
@@ -35,3 +35,6 @@ networks:
       com.docker.network.driver.mtu: 1440
   frontend:
     external: true
+
+
+# See https://github.com/nextcloud/all-in-one#nextcloud-all-in-one
