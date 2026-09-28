@@ -12,10 +12,6 @@ services:
       AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
       AUTHENTIK_POSTGRESQL__SSLMODE: ${PG_SSL_MODE}
       AUTHENTIK_LOG_LEVEL: ${AUTHENTIK_LOG_LEVEL:-debug}
-      # Disable JIT: stale stats + deep JOINs make LLVM dominate query time.
-      # See https://github.com/goauthentik/authentik/issues/24179
-      # keep an eye on it, this fix could break in future versions of authentik
-      PGOPTIONS: "-c jit=off"
       # mail setup
       AUTHENTIK_EMAIL__HOST: ${AUTHENTIK_EMAIL__HOST:?email host required}
       AUTHENTIK_EMAIL__FROM: ${AUTHENTIK_EMAIL__FROM}
@@ -56,9 +52,6 @@ services:
       AUTHENTIK_SECRET_KEY: ${AUTHENTIK_SECRET_KEY:?secret key required}
       AUTHENTIK_POSTGRESQL__SSLMODE: ${PG_SSL_MODE}
       AUTHENTIK_LOG_LEVEL: ${AUTHENTIK_LOG_LEVEL:-debug}
-      # Disable JIT: stale stats + deep JOINs make LLVM dominate query time.
-      # See https://github.com/goauthentik/authentik/issues/24179
-      PGOPTIONS: "-c jit=off"
       # mail setup
       AUTHENTIK_EMAIL__HOST: ${AUTHENTIK_EMAIL__HOST:?email host required}
       AUTHENTIK_EMAIL__FROM: ${AUTHENTIK_EMAIL__FROM}
