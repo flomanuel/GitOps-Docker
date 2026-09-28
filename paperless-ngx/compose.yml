@@ -81,13 +81,15 @@ services:
       - paperless-ngx
   tika:
     image: apache/tika:${TIKA_VERSION}
+    networks:
+      - paperless-ngx
   gotenberg:
     image: gotenberg/gotenberg:${GOTENBERG_VERSION}
     environment:
       CHROMIUM_DISABLE_JAVASCRIPT: true
       CHROMIUM_ALLOW_LIST: "file:///tmp/.*"
     networks:
-      paperless-ngx
+      - paperless-ngx
 volumes:
   redisdata:
 networks:
