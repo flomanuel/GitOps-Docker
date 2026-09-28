@@ -39,25 +39,30 @@ services:
     volumes:
       # store data and media (e.g. thumbnails) in the same folder
       - /mnt/paperless-ngx/data:/usr/src/paperless/data
-      - /mnt/paperless-ngx/data:/usr/src/paperless/media
+      - /mnt/paperless-ngx/media:/usr/src/paperless/media
       - /mnt/paperless-ngx/consume:/usr/src/paperless/consume
     environment:
       COMPOSE_PROJECT_NAME: paperless
       PAPERLESS_TIME_ZONE: Europe/Berlin
       PAPERLESS_OCR_LANGUAGE: de
       PAPERLESS_OCR_LANGUAGES: eng
+      PAPERLESS_SECRET_KEY: ${PAPERLESS_SECRET_KEY}
+      PAPERLESS_CONSUMPTION_DIR: /usr/src/paperless/consume
+      PAPERLESS_DATA_DIR: /usr/src/paperless/data
+      PAPERLESS_MEDIA_ROOT: /usr/src/paperless/media
+      PAPERLESS_URL: ${PAPERLESS_URL}
       # Redis
       PAPERLESS_REDIS: redis://broker:6379
       USERMAP_UID: 3001
       USERMAP_GID: 3007
       # DB access
+      PAPERLESS_DB_OPTIONS: "sslmode=require"
       PAPERLESS_DBENGINE: postgresql
       PAPERLESS_DBHOST: ${DB_HOST}
       PAPERLESS_DBPORT: ${DB_PORT}
       PAPERLESS_DBNAME: ${DB_NAME}
       PAPERLESS_DBUSER: ${DB_USER}
       PAPERLESS_DBPASS: ${DB_PASS}
-      PAPERLESS_DB_OPTIONS: "sslmode=require"
     networks:
       - frontend
       - paperless-ngx
