@@ -65,7 +65,7 @@ services:
       PAPERLESS_DBPASS: ${DB_PASS}
       # OAuth2/OpenID Connect
       PAPERLESS_APPS: allauth.socialaccount.providers.openid_connect
-      PAPERLESS_SOCIALACCOUNT_PROVIDERS: {"openid_connect":{"OAUTH_PKCE_ENABLED":true,"APPS":[{"provider_id":"authentik","name":"authentik","client_id":"${SSO_CLIENT_ID}","secret":"${SSO_CLIENT_SECRET}","settings":{"server_url":"https://auth.home.sauers.link/application/o/paperless-ngx/.well-known/openid-configuration","fetch_userinfo":true}}],"SCOPE":["openid","profile","email"]}}
+      PAPERLESS_SOCIALACCOUNT_PROVIDERS: '{"openid_connect":{"OAUTH_PKCE_ENABLED":true,"APPS":[{"provider_id":"authentik","name":"authentik","client_id":"${SSO_CLIENT_ID}","secret":"${SSO_CLIENT_SECRET}","settings":{"server_url":"https://auth.home.sauers.link/application/o/paperless-ngx/.well-known/openid-configuration","fetch_userinfo":true}}],"SCOPE":["openid","profile","email"]}}'
       PAPERLESS_LOGOUT_REDIRECT_URL: https://auth.home.sauers.link/application/o/paperless-ngx/end-session/
       PAPERLESS_SOCIAL_AUTO_SIGNUP: ${PAPERLESS_SOCIAL_AUTO_SIGNUP:-true}
       PAPERLESS_SOCIALACCOUNT_ALLOW_SIGNUPS: true
