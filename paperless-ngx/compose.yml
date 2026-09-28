@@ -10,7 +10,7 @@ services:
     environment:
       COMPOSE_PROJECT_NAME: paperless
       PAPERLESS_TIME_ZONE: Europe/Berlin
-      PAPERLESS_OCR_LANGUAGE: de
+      PAPERLESS_OCR_LANGUAGE: deu
       PAPERLESS_OCR_LANGUAGES: eng
       USERMAP_UID: 3001
       USERMAP_GID: 3007
