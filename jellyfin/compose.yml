@@ -9,8 +9,8 @@ services:
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128
     volumes:
-      - /opt/jellyfin/config:/config
-      - /opt/jellyfin/cache:/cache
+      - /srv/jellyfin/config:/config
+      - /srv/jellyfin/cache:/cache
       - type: bind
         source: /mnt/media/audio/
         target: /audio
