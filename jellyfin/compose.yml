@@ -47,6 +47,10 @@ services:
       # websecure: :443, streaming: :4444 (see traefik/compose.yml)
       - traefik.http.routers.jellyfin.entrypoints=websecure,streaming
       - traefik.http.routers.jellyfin.service=jellyfin
+      # Direct access by IP (http://10.50.0.11:4444), plain HTTP since no public cert can be issued for an IP
+      - traefik.http.routers.jellyfin-ip.rule=Host(`10.50.0.11`)
+      - traefik.http.routers.jellyfin-ip.entrypoints=streaming
+      - traefik.http.routers.jellyfin-ip.service=jellyfin
       - traefik.http.services.jellyfin.loadbalancer.server.port=8096
 
 networks:
