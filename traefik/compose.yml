@@ -2,7 +2,7 @@
 # - Entrypoints are bound per VLAN, so a router picks its network via `entrypoints=`:
 #     web/websecure  -> PROD and DATA addresses (:80/:443)
 #     mgmt           -> MGMT address (:443 on the host, :4444 in the container)
-#     streaming      -> PROD and DATA addresses (:4444 on the host, :8444 in the container), used by Jellyfin
+#     streaming      -> PROD and DATA addresses (:4444 on the host, :4444 in the container), used by Jellyfin
 # - The shared "frontend" network is created by Ansible (docker_networks), not by this stack.
 #
 # Stack variables (per environment, in Dockhand):
