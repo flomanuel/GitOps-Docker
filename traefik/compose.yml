@@ -1,7 +1,8 @@
 # Traefik reverse proxy, one instance per docker host. Deployed by Dockhand (git stack).
 # - Entrypoints are bound per VLAN, so a router picks its network via `entrypoints=`:
 #     web/websecure  -> PROD and DATA addresses (:80/:443)
-#     mgmt           -> MGMT address (:443 on the host, :8443 in the container)
+#     mgmt           -> MGMT address (:443 on the host, :4444 in the container)
+#     streaming      -> PROD and DATA addresses (:4444 on the host, :8444 in the container), used by Jellyfin
 # - The shared "frontend" network is created by Ansible (docker_networks), not by this stack.
 #
 # Stack variables (per environment, in Dockhand):
@@ -19,6 +20,8 @@ services:
       - "${PROD_IP:?}:443:443"
       - "${DATA_IP:?}:80:80"
       - "${DATA_IP:?}:443:443"
+      - "${PROD_IP:?}:4444:4444"
+      - "${DATA_IP:?}:4444:4444"
       - "${MGMT_IP:?}:80:80"
       - "${MGMT_IP:?}:443:443"
     volumes:

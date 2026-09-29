@@ -21,6 +21,9 @@ entryPoints:
         allowEncodedSlash: true
         allowEncodedQuestionMark: true
         allowEncodedPercent: true
+  # Alternative HTTPS port for Jellyfin (host :4444). Container port 8444 keeps :4444 free for the planned mgmt entrypoint.
+  streaming:
+    address: :8444
 providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
