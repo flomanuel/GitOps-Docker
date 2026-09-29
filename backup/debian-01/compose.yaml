@@ -35,3 +35,4 @@ services:
       - /opt/postgres/backup:/backup/postgres/backup:ro # pg_dumpall
       # Dockhand DB (stacks, encrypted secrets). The ENCRYPTION_KEY is NOT in here; it lives in Ansible's secrets.yml.
       - /opt/dockhand/data:/backup/dockhand/data:ro
+      - /opt/jellyfin/config:/backup/jellyfin/config:ro

@@ -3,29 +3,46 @@ services:
     image: jellyfin/jellyfin
     container_name: jellyfin
     # Optional - specify the uid and gid you would like Jellyfin to use instead of root
-    user: uid:gid
+    user: 3001:3007
+    group_add:
+      - "991" # host group "render"
     ports:
       - 8096:8096/tcp
       - 7359:7359/udp
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
     volumes:
-      - /path/to/config:/config
-      - /path/to/cache:/cache
+      - /opt/jellyfin/config:/config
+      - /opt/jellyfin/cache:/cache
       - type: bind
-        source: /path/to/media
-        target: /media
-      - type: bind
-        source: /path/to/media2
-        target: /media2
+        source: /mnt/media/audio/
+        target: /audio
         read_only: true
-      # Optional - extra fonts to be used during transcoding with subtitle burn-in
       - type: bind
-        source: /path/to/fonts
-        target: /usr/local/share/fonts/custom
+        source: /mnt/media/documents
+        target: /documents
+        read_only: true
+      - type: bind
+        source: /mnt/media/images
+        target: /images
+        read_only: true
+      - type: bind
+        source: /mnt/media/video
+        target: /video
         read_only: true
     restart: 'unless-stopped'
-    # Optional - alternative address used for autodiscovery
     environment:
-      - JELLYFIN_PublishedServerUrl=http://example.com
-    # Optional - may be necessary for docker healthcheck to pass if running in host network mode
+      - JELLYFIN_PublishedServerUrl=https://streaming.home.sauers.link
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+    networks:
+      - frontend
+      - jellyfin
+    tags:
+      # Backup
+      - docker-volume-backup.stop-during-backup=true
+
+networks:
+  frontend:
+    external: true
+  jellyfin:
