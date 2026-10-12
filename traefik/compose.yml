@@ -11,7 +11,7 @@
 #   CF_DNS_API_TOKEN (secret)     Cloudflare Zone:DNS:Edit, ACME DNS challenge
 services:
   traefik:
-    image: traefik:v3.7
+    image: traefik:v3.7.14
     container_name: traefik-1
     networks:
       - frontend
