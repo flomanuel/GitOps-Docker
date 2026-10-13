@@ -1,6 +1,6 @@
 services:
   broker:
-    image: docker.io/valkey/valkey:9-alpine
+    image: docker.io/valkey/valkey:9.1.2-alpine
     restart: unless-stopped
     volumes:
       - redisdata:/data
@@ -24,7 +24,7 @@ services:
   # PAPERLESS_DBPASS: ${DB_PASS}
   # PAPERLESS_DB_OPTIONS: "sslmode=require"
   webserver:
-    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    image: ghcr.io/paperless-ngx/paperless-ngx:${WEBSERVER_VERSION}
     restart: unless-stopped
     depends_on:
       - broker
