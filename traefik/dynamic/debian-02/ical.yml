@@ -1,0 +1,22 @@
+# Stable iCal URLs that redirect (302) to external calendar exports, e.g. for Nextcloud calendar subscriptions.
+# Only loaded by Traefik on debian-02 (TRAEFIK_HOST).
+# Traefik cannot set query parameters on a proxied request, so the client is redirected instead of proxied.
+http:
+  routers:
+    ical-h-da-florian:
+      rule: "Host(`ical.home.sauers.link`) && Path(`/h_da_florian`)"
+      entryPoints:
+        - websecure
+      service: noop@internal
+      middlewares:
+        - ical-h-da-florian-redirect
+      tls:
+        certResolver: cloudflare
+
+  middlewares:
+    ical-h-da-florian-redirect:
+      redirectRegex:
+        regex: "^https?://[^/]+/h_da_florian(\\?.*)?$"
+        replacement: "https://my.h-da.de/qisserver/pages/cm/exa/timetable/individualTimetableCalendarExport.faces?user=2348ec68-d985-4558-8737-d815f2a6a855feb6e74b-5574-4063-b183-59ac75aa9eb1&hash=124d9735e137a2e22a8d39d7b9067618&termgroup="
+        # 302: clients keep requesting the ical.home.sauers.link URL, so the target can be changed here later
+        permanent: false
