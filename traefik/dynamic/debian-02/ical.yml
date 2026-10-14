@@ -1,6 +1,11 @@
-# Stable iCal URLs that redirect (302) to external calendar exports, e.g. for Nextcloud calendar subscriptions.
+# Stable iCal URLs for external calendar exports, e.g. for Nextcloud calendar subscriptions.
 # Only loaded by Traefik on debian-02 (TRAEFIK_HOST).
-# Traefik cannot set query parameters on a proxied request, so the client is redirected instead of proxied.
+#
+# h_da (HISinOne) answers the Accept header Nextcloud sends ("text/calendar, application/calendar+json, ...")
+# with an endless 303 loop to its error page, so the export is proxied with "Accept: */*" instead of redirected to.
+# Traefik cannot add query parameters to a proxied request, hence two steps:
+#   1. /h_da_florian         -> 302 to /h_da_florian/export?<export query> on the same host
+#   2. /h_da_florian/export  -> proxied to the h_da export page, query is kept
 http:
   routers:
     ical-h-da-florian:
@@ -13,10 +18,37 @@ http:
       tls:
         certResolver: cloudflare
 
+    ical-h-da-florian-export:
+      rule: "Host(`ical.home.sauers.link`) && Path(`/h_da_florian/export`)"
+      entryPoints:
+        - websecure
+      service: h-da
+      middlewares:
+        - ical-h-da-export-path
+        - ical-accept-any
+      tls:
+        certResolver: cloudflare
+
+  services:
+    h-da:
+      loadBalancer:
+        passHostHeader: false
+        servers:
+          - url: "https://my.h-da.de"
+
   middlewares:
     ical-h-da-florian-redirect:
       redirectRegex:
-        regex: "^https?://[^/]+/h_da_florian(\\?.*)?$"
-        replacement: "https://my.h-da.de/qisserver/pages/cm/exa/timetable/individualTimetableCalendarExport.faces?user=2348ec68-d985-4558-8737-d815f2a6a855feb6e74b-5574-4063-b183-59ac75aa9eb1&hash=124d9735e137a2e22a8d39d7b9067618&termgroup="
-        # 302: clients keep requesting the ical.home.sauers.link URL, so the target can be changed here later
+        regex: "^(https?://[^/]+)/h_da_florian(\\?.*)?$"
+        replacement: "${1}/h_da_florian/export?user=2348ec68-d985-4558-8737-d815f2a6a855feb6e74b-5574-4063-b183-59ac75aa9eb1&hash=124d9735e137a2e22a8d39d7b9067618&termgroup="
+        # 302: clients keep requesting /h_da_florian, so the target can be changed here later
         permanent: false
+
+    ical-h-da-export-path:
+      replacePath:
+        path: "/qisserver/pages/cm/exa/timetable/individualTimetableCalendarExport.faces"
+
+    ical-accept-any:
+      headers:
+        customRequestHeaders:
+          Accept: "*/*"
