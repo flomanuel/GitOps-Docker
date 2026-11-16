@@ -2,9 +2,10 @@
 # Only loaded by Traefik on debian-02 (TRAEFIK_HOST).
 #
 # Defined via the file provider because hermes runs on a different host, so it
-# cannot use docker labels. vm09's Proxmox firewall only allows 22/80/443
-# (tofu/pve_vm_vm09_hermes.tofu in the IaC repo), so the web UI must listen on
-# port 80 — adjust the server URL below if that ever changes.
+# cannot use docker labels. The web UI serves HTTPS on 443 with a self-signed
+# certificate, so the backend skips certificate verification
+# (insecureSkipVerify): the internal hop is still TLS-encrypted end to end,
+# the cert is just not authenticated. Fine on the trusted prod VLAN.
 http:
   routers:
     hermes:
@@ -18,5 +19,11 @@ http:
   services:
     hermes:
       loadBalancer:
+        serversTransport: selfsigned-backend
         servers:
-          - url: "http://10.50.0.19:80"
+          - url: "https://10.50.0.19:443"
+
+  serversTransports:
+    # For backends whose TLS certificate traefik cannot verify (self-signed).
+    selfsigned-backend:
+      insecureSkipVerify: true
