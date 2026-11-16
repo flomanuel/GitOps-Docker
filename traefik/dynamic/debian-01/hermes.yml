@@ -1,5 +1,5 @@
 # Hermes (Nous Research) agent + web UI, running on VM vm09 (10.50.0.19, prod VLAN).
-# Only loaded by Traefik on debian-02 (TRAEFIK_HOST).
+# Only loaded by Traefik on debian-01 (TRAEFIK_HOST) — agent.home.sauers.link is a CNAME to debian-01.
 #
 # Defined via the file provider because hermes runs on a different host, so it
 # cannot use docker labels. The web UI serves HTTPS on 443 with a self-signed
