@@ -9,7 +9,7 @@
 http:
   routers:
     hermes:
-      rule: "Host(`ai-agent.home.sauers.link`)"
+      rule: "Host(`hermes.home.sauers.link`)"
       entryPoints:
         - websecure
       service: hermes
