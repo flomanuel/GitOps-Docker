@@ -1,0 +1,22 @@
+# Hermes (Nous Research) agent + web UI, running on VM vm09 (10.50.0.19, prod VLAN).
+# Only loaded by Traefik on debian-02 (TRAEFIK_HOST).
+#
+# Defined via the file provider because hermes runs on a different host, so it
+# cannot use docker labels. vm09's Proxmox firewall only allows 22/80/443
+# (tofu/pve_vm_vm09_hermes.tofu in the IaC repo), so the web UI must listen on
+# port 80 — adjust the server URL below if that ever changes.
+http:
+  routers:
+    hermes:
+      rule: "Host(`agent.home.sauers.link`)"
+      entryPoints:
+        - websecure
+      service: hermes
+      tls:
+        certResolver: cloudflare
+
+  services:
+    hermes:
+      loadBalancer:
+        servers:
+          - url: "http://10.50.0.19:80"
